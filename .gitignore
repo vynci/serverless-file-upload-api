@@ -1,0 +1,7 @@
+node_modules
+.webpack
+.webpackCache
+.build
+.history
+.package-lock.json
+.serverless

@@ -1,0 +1,46 @@
+service: serverless-file-upload-api
+
+package:
+  individually: false
+
+plugins:
+  - serverless-webpack
+  - serverless-offline  
+
+custom:
+  stage: "${opt:stage, self:provider.stage}"
+  cors:
+    origin: '*'
+    headers:
+        - Content-Type
+        - X-Amz-Date
+        - X-Amz-Security-Token
+        - X-Amz-User-Agent
+        - Access-Control-Allow-Headers
+        - Access-Control-Allow-Origin
+    allowCredentials: false
+  webpack:
+    webpackConfig: "webpack.config.js"
+    packager: "npm"
+    includeModules: true 
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  region: us-east-1
+  environment: ${file(env.yml):${self:custom.stage}}
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+        - "s3:PutObject"
+      Resource: "arn:aws:s3:::${self:provider.environment.fileBucket}/*"           
+
+functions:
+  singleFileUpload:
+    handler: src/handlers/main.singleFileUpload
+    events:
+    - http:
+        method: post
+        path: file/single/upload
+        cors: ${self:custom.cors}
+
