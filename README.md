@@ -15,6 +15,7 @@ This will install serverless offline, so you can test it locally.
 After you have set the necessary environment variables.
 
 `$ export AWS_ACCESS_KEY=xxxx`
+
 `$ export AWS_SECRET_KEY=xxxx`
 
 You can execute this command to deploy the services in AWS.
