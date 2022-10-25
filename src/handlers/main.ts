@@ -1,10 +1,8 @@
 import { s3 } from '../aws/s3';
 
-const env:any = process.env;
+const env: any = process.env;
 
 export const singleFileUpload = async (event) => {
-    let response = { statusCode: 0, body: {}, headers: { 'Access-Control-Allow-Origin': '*' } };
-
     const filename = event.headers.filename;
     const binary_file = event.body;
 
@@ -18,26 +16,22 @@ export const singleFileUpload = async (event) => {
             Key: path
         };
 
-        const result = await s3.putObject(params).promise();
+        const s3Result = await s3.putObject(params).promise();
 
-        response.statusCode = 200;
-        response.body = JSON.stringify({
-            data : {
-                result, 
-                status : 'success', 
-                fileUrl: env.fileRootPath + path
-            }
-        });
-
+        return response('success', env.fileRootPath + path, s3Result);
     } catch (err) {
-        response.statusCode = 500;
-        response.body = JSON.stringify({
-            data : {
-                status : 'error', 
-                message : err.message
-            }
-        });
+        return response('error', '', err.message);
     }
+}
 
-    return response;
+const response = (status, fileUrl, s3Result) => {
+    return {
+        statusCode : status === 'success' ? 200 : 500,
+        headers: { 'Access-Control-Allow-Origin': '*' },
+        data : {
+            s3Result,
+            status,
+            fileUrl
+        }
+    }
 }
