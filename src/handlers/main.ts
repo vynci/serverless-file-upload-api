@@ -28,10 +28,12 @@ const response = (status, fileUrl, s3Result) => {
     return {
         statusCode : status === 'success' ? 200 : 500,
         headers: { 'Access-Control-Allow-Origin': '*' },
-        data : {
-            s3Result,
-            status,
-            fileUrl
-        }
+        body: JSON.stringify({
+            data : {
+                s3Result,
+                status,
+                fileUrl
+            }
+        })
     }
 }
