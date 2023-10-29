@@ -1,6 +1,8 @@
 # Serverless File Upload API
 
-This is a quick implementation of a File Uploader API that is deployed in AWS using API Gateway, Lambda and S3. This API can upload any file type.
+This is a quick implementation of a File Uploader API that is deployed in AWS using API Gateway, Lambda, and S3. This API can upload any file type.
+
+Checkout the full write-up [here](https://www.vynci.dev/posts/file-uploader-using-aws-s3-api-gateway-lambda).
 
 ## Development
 
